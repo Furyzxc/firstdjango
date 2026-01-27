@@ -1,0 +1,18 @@
+<html>
+    <head>
+        {% block title %}
+            Fucking Library <!-- Default title if non is supplied by another template -->
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+    {% for b in books %}
+        <div>
+            <p> {{b.author }} </p>
+            <div><a target="self" href='/books/{{b.id}}'>{{ b.title }}</a></div>
+            <p> {{b.author }} </p>
+        </div> 
+    {% endfor %}
+</html> 
