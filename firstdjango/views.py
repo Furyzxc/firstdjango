@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Book
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import BookForm
 
 def home(request):
     return render(request, 'homepage/index.html')
@@ -28,3 +29,14 @@ def view_books_by_category(request, category):
     by_category = Book.objects.all() if category.lower() == 'default' else Book.objects.filter(category=category)
     context = {'books': by_category}
     return render(request, 'base/index.html', context)
+
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm()
+
+    return render(request, 'add_book.html', {'form': form})
