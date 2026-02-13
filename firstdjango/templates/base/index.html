@@ -1,18 +1,25 @@
+<!-- pages/templates/base.html -->
+<!DOCTYPE html>
 <html>
-    <head>
-        {% block title %}
-            Fucking Library <!-- Default title if non is supplied by another template -->
-        {% endblock %}
-    </head>
-    <body>
-        {% block content %}
-        {% endblock %}
-    </body>
-    {% for b in books %}
-        <div>
-            <p> {{b.author }} </p>
-            <div><a target="self" href='/books/{{b.id}}'>{{ b.title }}</a></div>
-            <p> {{b.author }} </p>
-        </div> 
-    {% endfor %}
-</html> 
+<head>
+    <title>Library</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'books' %}">Books</a>
+
+        {% if user.is_authenticated %}
+            <span>Hello, {{ user.username }}!</span>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Log Out</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Log In</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </nav>
+    <a href="/books/add">Add books</a>
+    {% block content %}{% endblock %}
+</body>
+</html>
